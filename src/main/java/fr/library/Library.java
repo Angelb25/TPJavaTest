@@ -8,17 +8,52 @@ public class Library {
     private final List<Book> books = new ArrayList<>();
 
     public void addBook(Book book) {
-        // TODO 4 : Ajouter un livre
-        throw new UnsupportedOperationException("TODO 4 : addBook");
+        books.add(book);
+    }
+
+    public void removeBook(String isbn) {
+        books.removeIf(book -> book.getIsbn().equals(isbn));
     }
 
     public void displayBooks() {
-        // TODO 5 : Afficher tous les livres
-        throw new UnsupportedOperationException("TODO 5 : displayBooks");
+        for (Book book : books) {
+            System.out.println(book);
+        }
     }
 
+    // Recherche par titre
     public Book findBookByTitle(String title) {
-        // TODO 6 : Rechercher un livre par titre
-        throw new UnsupportedOperationException("TODO 6 : findBookByTitle");
+        for (Book book : books) {
+            if (book.getTitle().equalsIgnoreCase(title)) {
+                return book;
+            }
+        }
+        return null;
+    }
+
+    // Recherche livres d'un auteur (renvoie une liste)
+    public List<Book> findByAuthor(String author) {
+        List<Book> result = new ArrayList<>();
+        for (Book book : books) {
+            if (book.getAuthor().equalsIgnoreCase(author)) {
+                result.add(book);
+            }
+        }
+        return result;
+    }
+
+    // Vérifie si l'ISBN est présent
+    public boolean containsIsbn(String isbn) {
+        for (Book book : books) {
+            if (book.getIsbn().equals(isbn)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Renvoie le nombre total de livres dans la bibliothèque
+    public int size() {
+        return books.size();
     }
 }
