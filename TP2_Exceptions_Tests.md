@@ -44,8 +44,7 @@ class LibraryTest {
     }
 }
 ```
-
-Lancez `./gradlew test` : le test doit passer.
+- [x] Lancez `./gradlew test` : le test doit passer.
 
 ## 3. Reste à faire
 

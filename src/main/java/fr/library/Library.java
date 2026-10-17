@@ -1,41 +1,49 @@
 package fr.library;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Library {
 
-    private final List<Book> books = new ArrayList<>();
+    private final Map<String, Book> books = new LinkedHashMap<>();
+    // private final List<Book> books = new ArrayList<>();
 
     public void addBook(Book book) {
-        books.add(book);
+        if (books.containsKey(book.getIsbn())) {
+            throw new DuplicateBookException("ISBN déjà présent : " + book.getIsbn());
+        }
+        books.put(book.getIsbn(), book);
     }
 
     public void removeBook(String isbn) {
-        books.removeIf(book -> book.getIsbn().equals(isbn));
+        if (books.remove(isbn) == null) {
+            throw new BookNotFoundException("Livre introuvable : " + isbn);
+        }
     }
 
     public void displayBooks() {
-        for (Book book : books) {
+        for (Book book : books.values()) {
             System.out.println(book);
         }
     }
 
     // Recherche par titre
     public Book findBookByTitle(String title) {
-        for (Book book : books) {
+        for (Book book : books.values()) {
             if (book.getTitle().equalsIgnoreCase(title)) {
                 return book;
             }
         }
-        return null;
+        throw new BookNotFoundException("Livre introuvable : " + title);
     }
 
     // Recherche livres d'un auteur (renvoie une liste)
     public List<Book> findByAuthor(String author) {
         List<Book> result = new ArrayList<>();
-        for (Book book : books) {
-            if (book.getAuthor().equalsIgnoreCase(author)) {
+        for (Book book : books.values()) {
+            if (book.getAuthor() != null && book.getAuthor().equalsIgnoreCase(author)) {
                 result.add(book);
             }
         }
@@ -44,12 +52,7 @@ public class Library {
 
     // Vérifie si l'ISBN est présent
     public boolean containsIsbn(String isbn) {
-        for (Book book : books) {
-            if (book.getIsbn().equals(isbn)) {
-                return true;
-            }
-        }
-        return false;
+        return books.containsKey(isbn);
     }
 
     // Renvoie le nombre total de livres dans la bibliothèque
