@@ -2,8 +2,12 @@ package fr.library;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -136,5 +140,51 @@ class LibraryTest {
     void exceptionsShouldBeLibraryExceptions() {
         assertTrue(LibraryException.class.isAssignableFrom(BookNotFoundException.class));
         assertTrue(LibraryException.class.isAssignableFrom(DuplicateBookException.class));
+    }
+
+    @Test
+    void shouldReturnEmptyListWhenSortingEmptyLibrary() {
+        assertTrue(library.booksSortedByTitle().isEmpty());
+    }
+
+    @Test
+    void shouldKeepBothBooksWithSameTitle() {
+        library.addBook(new Book("2", "Clean Code", "B", 2008));
+        library.addBook(new Book("1", "Clean Code", "A", 2010));
+
+        List<Book> result = library.booksSortedByTitle();
+
+        assertEquals(2, result.size());
+    }
+
+    @Test
+    void shouldSortByTitle() {
+        library.addBook(new Book("1", "Zebra", "A", 2000));
+        library.addBook(new Book("2", "Alpha", "B", 2001));
+
+        List<Book> result = library.booksSortedByTitle();
+
+        assertEquals("Alpha", result.get(0).getTitle());
+        assertEquals("Zebra", result.get(1).getTitle());
+    }
+    static Stream<Arguments> criteriaProvider() {
+        return Stream.of(
+                Arguments.of(new ByTitle("clean code"), List.of("1")),
+                Arguments.of(new ByAuthor("robert martin"), List.of("1", "2")),
+                Arguments.of(new ByYearRange(2010, 2020), List.of("3")),
+                Arguments.of(new ByTitle("Inconnu"), List.of())
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("criteriaProvider")
+    void shouldSearchByCriteria(SearchCriteria criteria, List<String> expectedIsbns) {
+        library.addBook(new Book("1", "Clean Code", "Robert Martin", 2008));
+        library.addBook(new Book("2", "Clean Architecture", "Robert Martin", 2017));
+        library.addBook(new Book("3", "Effective Java", "Joshua Bloch", 2018));
+
+        List<String> isbns = library.search(criteria).stream().map(Book::getIsbn).toList();
+
+        assertEquals(expectedIsbns, isbns);
     }
 }

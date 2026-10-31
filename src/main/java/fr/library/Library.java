@@ -1,9 +1,7 @@
 package fr.library;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.*;
 
 public class Library {
 
@@ -24,30 +22,40 @@ public class Library {
     }
 
     public void displayBooks() {
-        for (Book book : books.values()) {
-            System.out.println(book);
-        }
+        books.values().forEach(System.out::println);
     }
 
     // Recherche par titre
     public Book findBookByTitle(String title) {
-        for (Book book : books.values()) {
-            if (book.getTitle().equalsIgnoreCase(title)) {
-                return book;
-            }
-        }
-        throw new BookNotFoundException("Livre introuvable : " + title);
+        return books.values().stream()
+                .filter(book -> book.getTitle().equalsIgnoreCase(title))
+                .findFirst()
+                .orElseThrow(() -> new BookNotFoundException("Livre introuvable : " + title));
     }
 
     // Recherche livres d'un auteur (renvoie une liste)
     public List<Book> findByAuthor(String author) {
-        List<Book> result = new ArrayList<>();
-        for (Book book : books.values()) {
-            if (book.getAuthor() != null && book.getAuthor().equalsIgnoreCase(author)) {
-                result.add(book);
-            }
-        }
-        return result;
+        return books.values().stream()
+                .filter(book -> book.getAuthor() != null && book.getAuthor().equalsIgnoreCase(author))
+                .toList();
+    }
+
+    public List<Book> booksSortedByTitle() {
+        return books.values().stream()
+                .sorted(Comparator.comparing(Book::getTitle))
+                .toList();
+    }
+
+    public List<Book> booksSortedByAuthor() {
+        return books.values().stream()
+                .sorted(Comparator.comparing(Book::getAuthor).thenComparing(Book::getTitle))
+                .toList();
+    }
+
+    public List<Book> booksSortedByIsbn() {
+        return books.values().stream()
+                .sorted(Comparator.comparing(Book::getIsbn))
+                .toList();
     }
 
     // Vérifie si l'ISBN est présent
@@ -59,4 +67,17 @@ public class Library {
     public int size() {
         return books.size();
     }
+
+    public List<Book> search(SearchCriteria criteria) {
+        return books.values().stream()
+                .filter(book -> switch (criteria) {
+                    case ByTitle(String title) -> book.getTitle().equalsIgnoreCase(title);
+                    case ByAuthor(String author) ->
+                            book.getAuthor() != null && book.getAuthor().equalsIgnoreCase(author);
+                    case ByYearRange(int from, int to) ->
+                            book.getYear() >= from && book.getYear() <= to;
+                })
+                .toList();
+    }
+
 }
