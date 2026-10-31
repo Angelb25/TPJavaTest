@@ -69,6 +69,6 @@ public List<Book> search(SearchCriteria criteria) {
 
 ## ✅ Terminé quand…
 
-- [ ] Plus aucune boucle `for` dans `Library`
-- [ ] `search(...)` gère les trois critères avec un `switch` sans `default`
-- [ ] Tous les tests passent dans la CI
+- [X ] Plus aucune boucle `for` dans `Library`
+- [ X] `search(...)` gère les trois critères avec un `switch` sans `default`
+- [ X] Tous les tests passent dans la CI
