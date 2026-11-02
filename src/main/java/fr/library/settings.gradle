@@ -1,0 +1,3 @@
+package fr.library
+
+rootProject.name = 'library'

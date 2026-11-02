@@ -171,7 +171,8 @@ class LibraryTest {
         return Stream.of(
                 Arguments.of(new ByTitle("clean code"), List.of("1")),
                 Arguments.of(new ByAuthor("robert martin"), List.of("1", "2")),
-                Arguments.of(new ByYearRange(2010, 2020), List.of("3")),
+                Arguments.of(new ByYearRange(2018, 2018), List.of("3")),   // borne incluse des deux côtés
+                Arguments.of(new ByYearRange(2008, 2008), List.of("1")),
                 Arguments.of(new ByTitle("Inconnu"), List.of())
         );
     }
