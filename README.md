@@ -57,7 +57,7 @@ Chaque TP repart du code du TP précédent : travaillez dans **un seul dépôt**
 
 ```text
 .
-├── build.gradle               # configuration Gradle
+├── fr.library.build.gradle               # configuration Gradle
 ├── gradlew / gradlew.bat      # wrapper Gradle (pas besoin d'installer Gradle)
 ├── src/main/java/fr/library/  # votre code
 └── ressources-tp5/            # fichiers à copier au TP 5 (ne pas toucher avant)
