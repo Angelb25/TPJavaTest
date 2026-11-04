@@ -1,6 +1,6 @@
 # Gradle
 .gradle/
-build/
+fr.library.build/
 !gradle/wrapper/gradle-wrapper.jar
 
 # IntelliJ IDEA
@@ -11,3 +11,5 @@ out/
 # OS
 .DS_Store
 Thumbs.db
+
+build/

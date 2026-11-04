@@ -1,63 +1,35 @@
 package fr.library;
 
 public class Book {
-    // TODO 2 : Créer les getters
-    public String getTitle() {
-        return title;
-    }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public int getYear() {
-        return year;
-    }
-
-    public void setYear(int year) {
-        this.year = year;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public String getIsbn() {
-        return Isbn;
-    }
-
-    // TODO 3 : Redéfinir toString()
-    @Override
-    public String toString() {
-        return "Book{" +
-                "title='" + title + '\'' +
-                ", author='" + author + '\'' +
-                ", year=" + year +
-                ", Isbn=" + Isbn +
-                '}';
-    }
-
+    private final String isbn;
     private String title;
     private String author;
     private int year;
-    private String Isbn;
 
-    public Book(String title, String author, int year, String Isbn) {
-        // TODO 1 : initialiser les champs
-        if (title == null || title.trim().isEmpty()) {
-            throw new IllegalArgumentException("Le titre du livre ne peut pas être null ou vide.");
+    public Book(String isbn, String title, String author, int year) {
+        if (isbn == null || isbn.isBlank()) {
+            throw new IllegalArgumentException("L'ISBN ne peut pas être null, vide ou composé d'espaces.");
         }
-
-        if (Isbn == null || Isbn.trim().isEmpty()) {
-            throw new IllegalArgumentException("L'ISBN du livre ne peut pas être null ou vide.");
+        if (title == null || title.isBlank()) {
+            throw new IllegalArgumentException("Le titre ne peut pas être null, vide ou composé d'espaces.");
         }
-        this.author = author;
+        this.isbn = isbn;
         this.title = title;
+        this.author = author;
         this.year = year;
-        this.Isbn = Isbn;
+    }
+
+    public String getIsbn() { return isbn; }
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+    public String getAuthor() { return author; }
+    public void setAuthor(String author) { this.author = author; }
+    public int getYear() { return year; }
+    public void setYear(int year) { this.year = year; }
+
+    @Override
+    public String toString() {
+        return "Book{isbn='" + isbn + "', title='" + title + "', author='" + author + "', year=" + year + '}';
     }
 }
